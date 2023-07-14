@@ -13,19 +13,17 @@ uint8_t GPIORead(GPIO_TypeDef* GPIOx, uint16_t Pin){
 // Função delay usando um timer
 // Entrada: tempo em milissegundos
 void delay_ms(uint32_t time_ms){
-    // Configuração do timer
-    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; // Habilita o clock do timer 2
-    TIM2->PSC = 72 - 1; // Configura o prescaler para 72
-    TIM2->ARR = (uint16_t)(time_ms * 2); // Configura o valor de auto-reload para o tempo desejado
-    TIM2->CR1 |= TIM_CR1_ARPE; // Habilita o auto-reload preload
-    TIM2->EGR |= TIM_EGR_UG; // Gera um evento de atualização para carregar os valores de configuração
-    TIM2->CR1 |= TIM_CR1_CEN; // Habilita o timer
+    
+    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; 
+    TIM2->PSC = 72 - 1; 
+    TIM2->ARR = (uint16_t)(time_ms * 2); 
+    TIM2->CR1 |= TIM_CR1_ARPE; 
+    TIM2->EGR |= TIM_EGR_UG; 
+    TIM2->CR1 |= TIM_CR1_CEN; 
 
-    // Espera o timer terminar
-    while((TIM2->SR & TIM_SR_UIF) == 0){
-        // Espera
-    }
+    
+    while((TIM2->SR & TIM_SR_UIF) == 0){}
 
-    // Desabilita o timer
+    
     TIM2->CR1 &= ~TIM_CR1_CEN;
 }
